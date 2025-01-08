@@ -9,7 +9,6 @@ import Signup from "./components/Signup";
 import Alert from "./components/common/Alert";
 
 function App() {
-  // State to store alert messages
   const [alert, setAlert] = useState(null);
 
   const handleAlert = (message, type) => {
