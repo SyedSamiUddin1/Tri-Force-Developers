@@ -7,6 +7,9 @@ import Features from "./components/Features";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Alert from "./components/common/Alert";
+import ForgotPassword from "./components/ForgotPassword";
+import VerifyOTP from "./components/VerifyOTP";
+import NewPassword from "./components/NewPassword";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -35,6 +38,18 @@ function App() {
         />
         <Route path="/login" element={<Login handleAlert={handleAlert} />} />
         <Route path="/signup" element={<Signup handleAlert={handleAlert} />} />
+        <Route
+          path="/forgotpassword"
+          element={<ForgotPassword handleAlert={handleAlert} />}
+        />
+        <Route
+          path="/verifyOTP"
+          element={<VerifyOTP handleAlert={handleAlert} />}
+        />
+        <Route
+          path="/newpassword"
+          element={<NewPassword handleAlert={handleAlert} />}
+        />
       </Routes>
     </BrowserRouter>
   );

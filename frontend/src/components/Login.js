@@ -42,7 +42,7 @@ function Login(props) {
         <div className="flex items-center justify-between">
           <div className="text-sm">
             <Link
-              to="#"
+              to="/forgotpassword"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
               Forgot your password?
