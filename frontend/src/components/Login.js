@@ -1,15 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import AuthCard from "./common/AuthCard";
 import Input from "./common/Input";
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Login(props) {
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  // Update credentials state on input change
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    props.handleAlert("Working", "success");
+
+    // Check for empty fields
+    if (!credentials.email || !credentials.password) {
+      props.handleAlert("Please fill in all fields.", "danger");
+      return;
+    }
+
+    // Validate password format (8+ chars, uppercase, lowercase, numbers)
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordPattern.test(credentials.password)) {
+      props.handleAlert(
+        "Password should be at least 8 characters, contain uppercase, lowercase letters, and numbers.",
+        "danger"
+      );
+      return;
+    }
+
+    // Validate email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(credentials.email)) {
+      props.handleAlert("Please enter valid email format.", "danger");
+      return;
+    }
+
+    try {
+    } catch (error) {}
   };
 
   return (
@@ -21,10 +56,11 @@ function Login(props) {
             name="email"
             type="email"
             autoComplete="email"
-            required
             label="Email address"
             icon={<Mail size={20} />}
             placeholder="Enter your email"
+            value={credentials.email}
+            onChange={handleChange}
           />
 
           <Input
@@ -32,10 +68,11 @@ function Login(props) {
             name="password"
             type="password"
             autoComplete="current-password"
-            required
             label="Password"
             icon={<Lock size={20} />}
             placeholder="Enter your password"
+            value={credentials.password}
+            onChange={handleChange}
           />
         </div>
 

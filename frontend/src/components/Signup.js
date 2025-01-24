@@ -1,14 +1,101 @@
-import React from "react";
+// Import necessary dependencies
+import React, { useState } from "react";
 import { Mail, Lock, User } from "lucide-react";
 import AuthCard from "./common/AuthCard";
 import Input from "./common/Input";
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-function Signup() {
-  const handleSubmit = (e) => {
+// Define the Signup component
+function Signup(props) {
+  // Initialize state for user credentials
+  const [credentials, setCredentials] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // Update credentials state on input change
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup logic here
+
+    // Destructure credentials object
+    const { name, email, password, confirmPassword } = credentials;
+
+    // Check for empty fields
+    if (
+      !credentials.name ||
+      !credentials.email ||
+      !credentials.password ||
+      !credentials.confirmPassword
+    ) {
+      props.handleAlert("Please fill in all fields.", "danger");
+      return;
+    }
+
+    // Validate password format (8+ chars, uppercase, lowercase, numbers)
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordPattern.test(credentials.password)) {
+      props.handleAlert(
+        "Password should be at least 8 characters, contain uppercase, lowercase letters, and numbers.",
+        "danger"
+      );
+      return;
+    }
+
+    // Validate email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(credentials.email)) {
+      props.handleAlert("Please enter valid email format.", "danger");
+      return;
+    }
+
+    // Check password match
+    if (credentials.password !== credentials.confirmPassword) {
+      props.handleAlert("Password do not match.", "danger");
+      return;
+    }
+
+    try {
+      // Send a POST request to the server to register the user
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+
+      // If the response status is 201, display a success message
+      if (response.status === 201) {
+        props.handleAlert({
+          type: "success",
+          message: "User registered successfully.",
+        });
+
+        // Reset the credentials state
+        setCredentials({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (error) {
+      // If there's an error, display an error message
+      props.handleAlert({
+        type: "danger",
+        message: error.response?.data?.message || "An error occurred",
+      });
+    }
   };
 
   return (
@@ -20,10 +107,11 @@ function Signup() {
             name="name"
             type="text"
             autoComplete="name"
-            required
             label="Full name"
             icon={<User size={20} />}
             placeholder="Enter your full name"
+            value={credentials.name}
+            onChange={handleChange}
           />
 
           <Input
@@ -31,10 +119,11 @@ function Signup() {
             name="email"
             type="email"
             autoComplete="email"
-            required
             label="Email address"
             icon={<Mail size={20} />}
             placeholder="Enter your email"
+            value={credentials.email}
+            onChange={handleChange}
           />
 
           <Input
@@ -42,21 +131,23 @@ function Signup() {
             name="password"
             type="password"
             autoComplete="new-password"
-            required
             label="Password"
             icon={<Lock size={20} />}
             placeholder="Create a password"
+            value={credentials.password}
+            onChange={handleChange}
           />
 
           <Input
-            id="confirm-password"
-            name="confirm-password"
+            id="confirmPassword"
+            name="confirmPassword"
             type="password"
             autoComplete="new-password"
-            required
             label="Confirm password"
             icon={<Lock size={20} />}
             placeholder="Confirm your password"
+            value={credentials.confirmPassword}
+            onChange={handleChange}
           />
         </div>
 
@@ -75,5 +166,4 @@ function Signup() {
     </AuthCard>
   );
 }
-
 export default Signup;
