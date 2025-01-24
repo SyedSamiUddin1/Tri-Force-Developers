@@ -41,7 +41,7 @@ exports.setup2FA = async (req, res) => {
         }
 
         const secret = speakeasy.generateSecret({
-            name: `2fa:${user.password}`,
+            name: `2fa:${user.email}`,
         });
 
         const qrCodeUrl = await QRCode.toDataURL(secret.otpauth_url);
