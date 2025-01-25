@@ -34,7 +34,7 @@ function ForgotPassword() {
           />
         </div>
 
-        <Button text={"Send reset instructions."} />
+        <Button text={"Forgot password"} />
 
         <div className="text-center text-sm">
           <Link

@@ -4,11 +4,12 @@ import { Mail, Lock, User } from "lucide-react";
 import AuthCard from "./common/AuthCard";
 import Input from "./common/Input";
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Define the Signup component
 function Signup(props) {
+  const navigate = useNavigate();
   // Initialize state for user credentials
   const [credentials, setCredentials] = useState({
     name: "",
@@ -66,7 +67,7 @@ function Signup(props) {
     try {
       // Send a POST request to the server to register the user
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "http://localhost:8001/api/auth/register",
         {
           name,
           email,
@@ -76,10 +77,7 @@ function Signup(props) {
 
       // If the response status is 201, display a success message
       if (response.status === 201) {
-        props.handleAlert({
-          type: "success",
-          message: "User registered successfully.",
-        });
+        props.handleAlert("User registered successfully.", "success");
 
         // Reset the credentials state
         setCredentials({
@@ -88,6 +86,7 @@ function Signup(props) {
           password: "",
           confirmPassword: "",
         });
+        navigate("/login");
       }
     } catch (error) {
       // If there's an error, display an error message

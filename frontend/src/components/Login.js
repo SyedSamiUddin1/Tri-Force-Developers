@@ -1,50 +1,44 @@
 import React, { useState } from "react";
-import { Mail, Lock } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import AuthCard from "./common/AuthCard";
 import Input from "./common/Input";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 
-function Login(props) {
+function Login() {
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
 
-  // Update credentials state on input change
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for empty fields
-    if (!credentials.email || !credentials.password) {
-      props.handleAlert("Please fill in all fields.", "danger");
-      return;
-    }
-
-    // Validate password format (8+ chars, uppercase, lowercase, numbers)
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    if (!passwordPattern.test(credentials.password)) {
-      props.handleAlert(
-        "Password should be at least 8 characters, contain uppercase, lowercase letters, and numbers.",
-        "danger"
-      );
-      return;
-    }
-
-    // Validate email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(credentials.email)) {
-      props.handleAlert("Please enter valid email format.", "danger");
-      return;
-    }
-
     try {
-    } catch (error) {}
+      const response = await axios.post(
+        "http://localhost:8001/api/auth/login",
+        credentials
+      );
+
+      // Store token in cookies
+      Cookies.set("token", response.data.token, {
+        secure: true,
+        sameSite: "strict",
+      });
+
+      // Redirect to main page
+      navigate("/");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
+      alert(errorMessage);
+    }
   };
 
   return (
@@ -57,7 +51,6 @@ function Login(props) {
             type="email"
             autoComplete="email"
             label="Email address"
-            icon={<Mail size={20} />}
             placeholder="Enter your email"
             value={credentials.email}
             onChange={handleChange}
@@ -69,7 +62,6 @@ function Login(props) {
             type="password"
             autoComplete="current-password"
             label="Password"
-            icon={<Lock size={20} />}
             placeholder="Enter your password"
             value={credentials.password}
             onChange={handleChange}
@@ -87,16 +79,16 @@ function Login(props) {
           </div>
         </div>
 
-        <Button text={"Sign in"} />
+        <Button text="Sign in" />
 
         <div className="text-center text-sm">
           <span className="text-gray-600">Don't have an account?</span>{" "}
-          <Link
-            to="/signup"
+          <a
+            href="/signup"
             className="font-medium text-indigo-600 hover:text-indigo-500"
           >
             Sign up
-          </Link>
+          </a>
         </div>
       </form>
     </AuthCard>

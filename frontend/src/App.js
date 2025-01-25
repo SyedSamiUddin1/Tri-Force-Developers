@@ -10,6 +10,7 @@ import Alert from "./components/common/Alert";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifyOTP from "./components/VerifyOTP";
 import NewPassword from "./components/NewPassword";
+import QRCodeSetup from "./components/QRCodeSetup";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -49,6 +50,10 @@ function App() {
         <Route
           path="/newpassword"
           element={<NewPassword handleAlert={handleAlert} />}
+        />
+        <Route
+          path="/qr-setup"
+          element={<QRCodeSetup handleAlert={handleAlert} />}
         />
       </Routes>
     </BrowserRouter>
