@@ -11,6 +11,7 @@ function Login(props) {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
+    tokenOtp: "",
   });
 
   const handleChange = (e) => {
@@ -42,6 +43,11 @@ function Login(props) {
         props.handleAlert("Please enter valid email format.", "danger");
         return;
       }
+
+      // if (credentials.token !== 6) {
+      //   props.handleAlert("Please enter 6 digit OTP Code.", "danger");
+      //   return;
+      // }
 
       const response = await axios.post(
         "http://localhost:8001/api/auth/login",
@@ -87,6 +93,17 @@ function Login(props) {
             label="Password"
             placeholder="Enter your password"
             value={credentials.password}
+            onChange={handleChange}
+          />
+
+          <Input
+            id="tokenOtp"
+            name="tokenOtp"
+            type="text"
+            autoComplete="tokenOtp"
+            label="OTP Token"
+            placeholder="Enter your OTP Token"
+            value={credentials.tokenOtp}
             onChange={handleChange}
           />
         </div>

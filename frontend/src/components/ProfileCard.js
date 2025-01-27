@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ShieldCheck, ShieldBan } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProfileCard = ({ handleLogout }) => {
+  const [is2FAEnable, setIs2FAEnable] = useState(false);
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -12,6 +15,7 @@ const ProfileCard = ({ handleLogout }) => {
       .then((response) => {
         const userData = response.data.user;
         setUser(userData);
+        setIs2FAEnable(userData.twoFactorEnabled);
       })
       .catch((error) => {
         console.error(error);
@@ -37,12 +41,21 @@ const ProfileCard = ({ handleLogout }) => {
             {user.email ? user.email : ""}
           </p>
           <div className="flex flex-col items-start text-sm">
-            <a
-              href="/qr-setup"
-              className="text-black hover:bg-indigo-600 hover:rounded-md p-2 hover:text-white w-full my-1"
-            >
-              2FA Setup
-            </a>
+            <div className="flex hover:bg-indigo-600 hover:rounded-md p-2 w-full">
+              <Link
+                to="/qr-setup"
+                className={`text-black w-full my-1 hover:text-white ${
+                  is2FAEnable ? "pointer-events-none" : ""
+                }`}
+              >
+                2FA Setup
+              </Link>
+              {is2FAEnable ? (
+                <ShieldCheck color="#14cc55" />
+              ) : (
+                <ShieldBan color="#e60f0f" />
+              )}
+            </div>
             <button
               onClick={handleLogout}
               className="text-black hover:bg-indigo-600 hover:rounded-md p-2 hover:text-white w-full my-1"
