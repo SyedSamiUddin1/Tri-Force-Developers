@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthCard from "./common/AuthCard";
@@ -8,7 +8,6 @@ export default function VerifyOTP(props) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const inputRefs = useMemo(
     () =>
       Array(6)
@@ -40,12 +39,11 @@ export default function VerifyOTP(props) {
     const token = otp.join("");
 
     if (token.length !== 6) {
-      setError("Please enter all 6 digits");
+      props.handleAlert("Please enter all 6 digits code.", "danger");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     try {
       const response = await axios.post(
@@ -59,12 +57,11 @@ export default function VerifyOTP(props) {
       );
 
       if (response.data.message === "2FA enabled successfully") {
-        props.handleAlert("2FA Enabled successfully.", "success");
         // Redirect to home
         navigate("/");
+        props.handleAlert("2FA Enabled successfully.", "success");
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Verification failed");
       props.handleAlert("Verification failed.", "danger");
     } finally {
       setLoading(false);

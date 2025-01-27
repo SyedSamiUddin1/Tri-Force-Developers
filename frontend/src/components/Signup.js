@@ -90,10 +90,7 @@ function Signup(props) {
       }
     } catch (error) {
       // If there's an error, display an error message
-      props.handleAlert({
-        type: "danger",
-        message: error.response?.data?.message || "An error occurred",
-      });
+      props.handleAlert("An error occured.", "danger");
     }
   };
 

@@ -18,8 +18,8 @@ function Alert(props) {
 
   return (
     <div
-      className="h-14 fixed top-4 left-[40%] transform -translate-x-1/2 -translate-y-1/2 z-50 min-w-[320px] max-w-[420px]"
-      data-aos="fade-down"
+      className="h-14 fixed top-20 right-4 transform -translate-x-1/2 -translate-y-1/2 z-50 min-w-[320px] max-w-[420px]"
+      data-aos="fade-left"
       data-aos-easing="ease-out"
       data-aos-duration="400"
     >

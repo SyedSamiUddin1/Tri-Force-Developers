@@ -6,7 +6,7 @@ import Button from "./Button";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-function Login() {
+function Login(props) {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -21,6 +21,28 @@ function Login() {
     e.preventDefault();
 
     try {
+      if (!credentials.email || !credentials.password) {
+        props.handleAlert("Please fill in all fields.", "danger");
+        return;
+      }
+
+      // Validate password format (8+ chars, uppercase, lowercase, numbers)
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!passwordPattern.test(credentials.password)) {
+        props.handleAlert(
+          "Password should be at least 8 characters, contain uppercase, lowercase letters, and numbers.",
+          "danger"
+        );
+        return;
+      }
+
+      // Validate email format
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(credentials.email)) {
+        props.handleAlert("Please enter valid email format.", "danger");
+        return;
+      }
+
       const response = await axios.post(
         "http://localhost:8001/api/auth/login",
         credentials
@@ -34,10 +56,11 @@ function Login() {
 
       // Redirect to main page
       navigate("/");
+      props.handleAlert("Successfully logged in.", "success");
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Login failed. Please try again.";
-      alert(errorMessage);
+      props.handleAlert(errorMessage, "danger");
     }
   };
 

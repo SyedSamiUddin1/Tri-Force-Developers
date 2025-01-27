@@ -31,7 +31,7 @@ function Navbar() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("token");
     setIsLoggedIn(false);
     navigate("/login");
   };

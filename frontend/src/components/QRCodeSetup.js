@@ -31,8 +31,6 @@ export default function QRCodeSetup(props) {
           }
         );
 
-        console.log("QR Code Response:", response.data);
-
         if (response.data.qrCode) {
           setQrCodeData(response.data.qrCode);
         } else {

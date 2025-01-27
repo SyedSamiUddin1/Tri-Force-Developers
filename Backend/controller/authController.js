@@ -123,7 +123,7 @@ exports.login = async (req, res) => {
 
     res.json({
       message: "Login successful",
-      token: jwtToken, // Return the token
+      token: jwtToken,
       user: {
         id: user._id,
         email: user.email,
