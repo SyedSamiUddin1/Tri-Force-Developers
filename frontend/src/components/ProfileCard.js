@@ -9,12 +9,9 @@ const ProfileCard = ({ handleLogout }) => {
 
     useEffect(() => {
         axios
-            .get(
-                "tri-force-developers-production.up.railway.app/api/auth/getUser",
-                {
-                    withCredentials: true,
-                }
-            )
+            .get("http://localhost:8001/api/auth/getUser", {
+                withCredentials: "include",
+            })
             .then((response) => {
                 const userData = response.data.user;
                 setUser(userData);

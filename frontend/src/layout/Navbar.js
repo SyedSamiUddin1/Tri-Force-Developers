@@ -17,12 +17,9 @@ function Navbar() {
         if (token) {
             setIsLoggedIn(true);
             axios
-                .get(
-                    "tri-force-developers-production.up.railway.app/api/auth/getUser",
-                    {
-                        withCredentials: true,
-                    }
-                )
+                .get("http://localhost:8001/api/auth/getUser", {
+                    withCredentials: "include",
+                })
                 .then((response) => {
                     const userData = response.data.user;
                     setUsername(userData.name);
