@@ -18,7 +18,7 @@ function Navbar() {
             setIsLoggedIn(true);
             axios
                 .get(
-                    "https://tri-force-developers-production.up.railway.app/api/auth/getUser",
+                    "tri-force-developers-production.up.railway.app/api/auth/getUser",
                     {
                         withCredentials: true,
                     }
