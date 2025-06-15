@@ -67,7 +67,7 @@ function Signup(props) {
         try {
             // Send a POST request to the server to register the user
             const response = await axios.post(
-                "https://tri-force-developers-production.up.railway.app/api/auth/register",
+                "tri-force-developers-production.up.railway.app/api/auth/register",
                 {
                     name,
                     email,
