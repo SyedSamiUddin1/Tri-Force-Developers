@@ -20,7 +20,7 @@ function Navbar() {
                 .get(
                     "https://tri-force-developers-production.up.railway.app/api/auth/getUser",
                     {
-                        withCredentials: "include",
+                        withCredentials: true,
                     }
                 )
                 .then((response) => {
