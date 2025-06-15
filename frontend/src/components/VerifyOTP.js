@@ -47,7 +47,7 @@ export default function VerifyOTP(props) {
 
         try {
             const response = await axios.post(
-                "tri-force-developers-production.up.railway.app/api/auth/verify2FA",
+                "https://tri-force-developers-production.up.railway.app/api/auth/verify2FA",
                 {
                     token,
                 },

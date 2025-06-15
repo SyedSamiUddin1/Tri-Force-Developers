@@ -22,7 +22,7 @@ export default function QRCodeSetup(props) {
 
             try {
                 const response = await axios.post(
-                    "tri-force-developers-production.up.railway.app/api/auth/setup2FA",
+                    "https://tri-force-developers-production.up.railway.app/api/auth/setup2FA",
                     {
                         token,
                     },

@@ -10,7 +10,7 @@ const ProfileCard = ({ handleLogout }) => {
     useEffect(() => {
         axios
             .get(
-                "tri-force-developers-production.up.railway.app/api/auth/getUser",
+                "https://tri-force-developers-production.up.railway.app/api/auth/getUser",
                 {
                     withCredentials: "include",
                 }

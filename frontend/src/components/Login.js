@@ -50,7 +50,7 @@ function Login(props) {
             // }
 
             const response = await axios.post(
-                "tri-force-developers-production.up.railway.app/api/auth/login",
+                "https://tri-force-developers-production.up.railway.app/api/auth/login",
                 credentials
             );
 
