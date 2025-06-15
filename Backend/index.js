@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
     cors({
-        origin: "https://tri-force-developers.vercel.app",
+        origin: "https://tri-force-developers-two.vercel.app",
         credentials: true,
     })
 );
